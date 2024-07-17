@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: api
+  messages:
+    basename: messages, errors
+    encoding: utf-8
+  datasource:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        use_sql_comments: true
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+storage:
+  profile-name: re-memory
+  region: kr-standard
+  bucket-name: re-memory-dev
+  end-point: https://kr.object.ncloudstorage.com
+  thumbnailUrl: /thumbnails/1.jpg
+
