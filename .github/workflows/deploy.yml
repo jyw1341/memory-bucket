@@ -28,6 +28,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Push Image To DockerHub
+        run: docker compose push
+
       - name: SSH 접속
         uses: appleboy/ssh-action@v1.0.3
         env:
@@ -48,4 +51,8 @@ jobs:
             mkdir /home/memory-bucket/current/.aws
             echo "$AWS_CREDENTIALS" > /home/memory-bucket/current/.aws/credentials
             rm -rf /home/memory-bucket/tobe
+            cd /home/memory-bucket/current
+            docker compose down
+            docker compose pull
+            docker compose up -d
             
