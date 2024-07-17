@@ -31,8 +31,7 @@ public class TestRestTemplateUtils {
         if (params == null) {
             params = "";
         }
-        String format = String.format("http://localhost:%d%s%s", port, path, params);
-        return format;
+        return String.format("http://localhost:%d%s%s", port, path, params);
     }
 
     public void requestCreateMember(MemberCreateRequest request) {

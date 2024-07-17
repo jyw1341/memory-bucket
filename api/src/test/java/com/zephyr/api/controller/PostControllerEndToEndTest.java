@@ -8,7 +8,6 @@ import com.zephyr.api.dto.request.PostUpdateRequest;
 import com.zephyr.api.dto.response.MemoryResponse;
 import com.zephyr.api.dto.response.PostListResponse;
 import com.zephyr.api.dto.response.PostResponse;
-import com.zephyr.api.utils.H2TableCleaner;
 import com.zephyr.api.utils.RestPageImpl;
 import com.zephyr.api.utils.TestRestTemplateUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -39,14 +38,6 @@ class PostControllerEndToEndTest {
 
     @Autowired
     private TestRestTemplateUtils testRestTemplateUtils;
-
-    @Autowired
-    private H2TableCleaner tableCleaner;
-
-//    @AfterEach
-//    void cleanUp() {
-//        tableCleaner.cleanTables("post", "memory");
-//    }
 
     @Test
     @DisplayName("포스트를 생성 시 포스트 정보가 저장된다")
@@ -491,7 +482,6 @@ class PostControllerEndToEndTest {
         Long albumId = 1L;
         Long seriesOneId = 1L;
         int postSize = 40;
-        int defaultSize = 20;
         List<PostCreateRequest> postCreateRequests = new ArrayList<>();
         for (int i = 0; i < postSize; i++) {
             List<MemoryCreateRequest> memoryRequestDtos = testRestTemplateUtils.createMemoryRequestDto(1);
@@ -530,8 +520,6 @@ class PostControllerEndToEndTest {
         Long albumId = 1L;
         Long seriesOneId = 1L;
         int postSize = 40;
-        int page = 0;
-        int size = 10;
         List<PostCreateRequest> postCreateRequests = new ArrayList<>();
         for (int i = 0; i < postSize; i++) {
             List<MemoryCreateRequest> memoryRequestDtos = testRestTemplateUtils.createMemoryRequestDto(1);
@@ -571,8 +559,6 @@ class PostControllerEndToEndTest {
         Long albumId = 1L;
         Long seriesOneId = 1L;
         int postSize = 40;
-        int page = 1;
-        int size = 10;
         List<PostCreateRequest> postCreateRequests = new ArrayList<>();
         for (int i = 0; i < postSize; i++) {
             List<MemoryCreateRequest> memoryRequestDtos = testRestTemplateUtils.createMemoryRequestDto(1);

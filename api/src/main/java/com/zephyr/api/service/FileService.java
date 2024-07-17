@@ -87,7 +87,7 @@ public class FileService {
     }
 
     public void deleteObject(String urlString) {
-        URL url = null;
+        URL url;
         try {
             url = new URL(urlString);
         } catch (MalformedURLException e) {

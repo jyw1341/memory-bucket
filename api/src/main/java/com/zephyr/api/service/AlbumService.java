@@ -61,9 +61,7 @@ public class AlbumService {
     public List<Album> getList(AlbumListServiceDto dto) {
         AlbumMemberListServiceDto albumMemberListServiceDto = new AlbumMemberListServiceDto(
                 dto.getMemberId(),
-                null,
-                dto.getPage(),
-                dto.getSize()
+                null
         );
 
         List<AlbumMember> albumMembers = albumMemberService.getList(albumMemberListServiceDto);
