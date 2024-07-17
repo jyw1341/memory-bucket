@@ -45,6 +45,7 @@ jobs:
             mkdir /home/memory-bucket/current
             mv /home/memory-bucket/tobe/compose.yml /home/memory-bucket/current/compose.yml
             echo "$APP_ENV" > /home/memory-bucket/current/.env
+            mkdir /home/memory-bucket/current/.aws
             echo "$AWS_CREDENTIALS" > /home/memory-bucket/current/.aws/credentials
             rm -rf /home/memory-bucket/tobe
             
