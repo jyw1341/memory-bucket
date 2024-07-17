@@ -9,6 +9,4 @@ public class AlbumMemberListServiceDto {
 
     private final Long memberId;
     private final Long albumId;
-    private final Integer page;
-    private final Integer size;
 }
