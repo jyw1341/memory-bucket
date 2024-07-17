@@ -1,0 +1,50 @@
+name: Deploy To Develop Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Github Repository 로드
+        uses: actions/checkout@v4
+
+      - name: SCP로 서버에 compose.yml 전송
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.NCLOUD_HOST }}
+          username: ${{ secrets.NCLOUD_USERNAME }}
+          password: ${{ secrets.NCLOUD_PASSWORD }}
+          port: ${{ secrets.NCLOUD_PORT }}
+          source: compose.yml
+          target: /home/memory-bucket/tobe
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: SSH 접속
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          AWS_CREDENTIALS: ${{ secrets.AWS_CREDENTIALS }}
+          APP_ENV: ${{ secrets.APP_ENV }}
+        with:
+          host: ${{ secrets.NCLOUD_HOST }}
+          username: ${{ secrets.NCLOUD_USERNAME }}
+          password: ${{ secrets.NCLOUD_PASSWORD }}
+          port: ${{ secrets.NCLOUD_PORT }}
+          envs: AWS_CREDENTIALS,APP_ENV
+          script_stop: true
+          script: |
+            rm -rf /home/memory-bucket/current
+            mkdir /home/memory-bucket/current
+            mv /home/memory-bucket/tobe/compose.yml /home/memory-bucket/current/compose.yml
+            echo "$APP_ENV" > /home/memory-bucket/current/.env
+            echo "$AWS_CREDENTIALS" > /home/memory-bucket/current/.aws/credentials
+            rm -rf /home/memory-bucket/tobe
+            
