@@ -12,7 +12,6 @@ import com.zephyr.api.utils.H2TableCleaner;
 import com.zephyr.api.utils.RestPageImpl;
 import com.zephyr.api.utils.TestRestTemplateUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ import static com.zephyr.api.utils.TestConstant.TEST_POST_TITLE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@ActiveProfiles("local")
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(TestConfig.class)
 @Sql(scripts = "PostControllerTestSql.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
@@ -44,10 +43,10 @@ class PostControllerEndToEndTest {
     @Autowired
     private H2TableCleaner tableCleaner;
 
-    @AfterEach
-    void cleanUp() {
+//    @AfterEach
+//    void cleanUp() {
 //        tableCleaner.cleanTables("post", "memory");
-    }
+//    }
 
     @Test
     @DisplayName("포스트를 생성 시 포스트 정보가 저장된다")
