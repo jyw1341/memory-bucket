@@ -2,6 +2,7 @@ services:
   memory-bucket-api:
     container_name: memory-bucket-api
     build: api
+    image: aprileaf/memory-bucket
     ports:
       - 8080:8080
     env_file: ./.env
