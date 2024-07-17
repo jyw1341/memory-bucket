@@ -8,6 +8,5 @@ import lombok.Data;
 public class SeriesUpdateServiceDto {
     private final Long memberId;
     private final Long seriesId;
-    private final Long albumId;
     private final String seriesName;
 }

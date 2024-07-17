@@ -60,7 +60,6 @@ public class SeriesController {
 
     @DeleteMapping("/series/{seriesId}")
     public void delete(@PathVariable Long seriesId) {
-        Long memberId = 1L;
         seriesService.delete(seriesId);
     }
 }
