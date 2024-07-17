@@ -6,10 +6,6 @@ services:
     ports:
       - 8080:8080
     env_file: ./.env
-    volumes:
-      - type: bind
-        source: ./.aws/credentials
-        target: /root/.aws/credentials
     depends_on:
       postgres:
         condition: service_healthy

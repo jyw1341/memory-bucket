@@ -1,7 +1,7 @@
 name: Deploy To Develop Server
 
 on:
-  push:
+  pull_request:
     branches:
       - main
 
@@ -28,37 +28,36 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build Docker Image
-        run: docker build -t memory-bucket-api ./api
-
-      - name: Tagging Docker Image
-        run: docker tag memory-bucket-api aprileaf/memory-bucket:latest
-
-      - name: Push To Dockerhub
-        run: docker push aprileaf/memory-bucket:latest
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ./api
+          push: true
+          tags: aprileaf/memory-bucket:latest
 
       - name: SSH 접속
         uses: appleboy/ssh-action@v1.0.3
         env:
-          AWS_CREDENTIALS: ${{ secrets.AWS_CREDENTIALS }}
           APP_ENV: ${{ secrets.APP_ENV }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         with:
           host: ${{ secrets.NCLOUD_HOST }}
           username: ${{ secrets.NCLOUD_USERNAME }}
           password: ${{ secrets.NCLOUD_PASSWORD }}
           port: ${{ secrets.NCLOUD_PORT }}
-          envs: AWS_CREDENTIALS,APP_ENV
+          envs: APP_ENV,DOCKERHUB_USERNAME,DOCKERHUB_TOKEN
           script_stop: true
           script: |
             rm -rf /home/memory-bucket/current
             mkdir /home/memory-bucket/current
             mv /home/memory-bucket/tobe/compose.yml /home/memory-bucket/current/compose.yml
             echo "$APP_ENV" > /home/memory-bucket/current/.env
-            mkdir /home/memory-bucket/current/.aws
-            echo "$AWS_CREDENTIALS" > /home/memory-bucket/current/.aws/credentials
             rm -rf /home/memory-bucket/tobe
             cd /home/memory-bucket/current
+            echo "$DOCKERHUB_TOKEN" | docker login --username $DOCKERHUB_USERNAME --password-stdin
             docker compose down
             docker compose pull
             docker compose up -d
+            docker logout
             

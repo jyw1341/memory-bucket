@@ -1,7 +1,6 @@
 FROM gradle:8.8.0-jdk17 as build
 WORKDIR /app
-COPY build.gradle .
-COPY src /app/src
+COPY . /app/
 RUN gradle clean bootJar
 
 FROM eclipse-temurin:17.0.11_9-jre
