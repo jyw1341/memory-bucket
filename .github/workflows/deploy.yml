@@ -34,7 +34,7 @@ jobs:
           tags: aprileaf/memory-bucket:latest
 
       - name: Create Docker Context
-        run: docker context create remote --docker host=ssh://${{ NCLOUD_USERNAME }}@${{ NCLOUD_HOST }}:${{ NCLOUD_PORT }}
+        run: docker context create remote --docker "host=ssh://${{ secrets.NCLOUD_USERNAME }}@${{ secrets.NCLOUD_HOST }}:${{ secrets.NCLOUD_PORT }}"
 
       - name: Use Remote Context
         run: docker context use remote
