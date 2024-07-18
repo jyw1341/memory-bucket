@@ -12,15 +12,8 @@ jobs:
       - name: Github Repository 로드
         uses: actions/checkout@v4
 
-      - name: SCP로 서버에 compose.yml 전송
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.NCLOUD_HOST }}
-          username: ${{ secrets.NCLOUD_USERNAME }}
-          password: ${{ secrets.NCLOUD_PASSWORD }}
-          port: ${{ secrets.NCLOUD_PORT }}
-          source: compose.yml
-          target: /home/memory-bucket/tobe
+      - name: Create .env file
+        run: echo "${{ secrets.APP_ENV }}" > .env
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -35,29 +28,24 @@ jobs:
           push: true
           tags: aprileaf/memory-bucket:latest
 
-      - name: SSH 접속
-        uses: appleboy/ssh-action@v1.0.3
-        env:
-          APP_ENV: ${{ secrets.APP_ENV }}
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up docker context over SSH authentication
+        uses: amirmarmul/docker-context-ssh-action@v2.1.3
         with:
-          host: ${{ secrets.NCLOUD_HOST }}
-          username: ${{ secrets.NCLOUD_USERNAME }}
-          password: ${{ secrets.NCLOUD_PASSWORD }}
-          port: ${{ secrets.NCLOUD_PORT }}
-          envs: APP_ENV,DOCKERHUB_USERNAME,DOCKERHUB_TOKEN
-          script_stop: true
-          script: |
-            rm -rf /home/memory-bucket/current
-            mkdir /home/memory-bucket/current
-            mv /home/memory-bucket/tobe/compose.yml /home/memory-bucket/current/compose.yml
-            echo "$APP_ENV" > /home/memory-bucket/current/.env
-            rm -rf /home/memory-bucket/tobe
-            cd /home/memory-bucket/current
-            echo "$DOCKERHUB_TOKEN" | docker login --username $DOCKERHUB_USERNAME --password-stdin
-            docker compose down
-            docker compose pull
-            docker compose up -d
-            docker logout
-            
+          ssh-host: ${{ secrets.NCLOUD_HOST }}
+          ssh-username: ${{ secrets.NCLOUD_USERNAME }}
+          ssh-private-key: ${{ secrets.NCLOUD_PRIVATE_KEY }}
+          ssh-port: ${{ secrets.NCLOUD_PORT }}
+
+      - name: Use Remote Context
+        run: docker context use remote
+
+      - name: Docker compose down
+        run: docker compose down
+
+      - name: Docker compose pull
+        run: docker compose pull
+
+      - name: Docker compose up
+        run: docker compose up -d
+
+
