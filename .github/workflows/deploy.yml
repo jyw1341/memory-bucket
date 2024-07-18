@@ -9,11 +9,6 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: ssh 세팅
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.NCLOUD_PRIVATE_KEY }}
-
       - name: Github Repository 로드
         uses: actions/checkout@v4
 
