@@ -1,7 +1,7 @@
 name: Deploy To Develop Server
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -27,6 +27,7 @@ jobs:
           context: ./api
           push: true
           tags: aprileaf/memory-bucket:latest
+          file: ./api/Dockerfile
 
       - name: Set up docker context over SSH authentication
         uses: amirmarmul/docker-context-ssh-action@v2.1.3
