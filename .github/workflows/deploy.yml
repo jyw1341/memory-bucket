@@ -24,9 +24,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: ./api
+          context: .
           push: true
-          tags: aprileaf/memory-bucket:latest
+          tags: aprileaf/memory-bucket-api:latest
           file: ./api/Dockerfile
 
       - name: Set up docker context over SSH authentication
