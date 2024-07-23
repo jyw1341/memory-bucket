@@ -1,4 +1,12 @@
-.dockerignore
+**/build
+**/Dockerfile
+.git
+.github
+.gradle
+.idea
 .env
-build
-Dockerfile
+.dockerignore
+.gitattributes
+.gitignore
+compose.yml
+README.md
