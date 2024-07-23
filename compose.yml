@@ -1,7 +1,7 @@
 services:
   memory-bucket-api:
-    container_name: memory-bucket
-    image: aprileaf/memory-bucket
+    container_name: memory-bucket-api
+    image: aprileaf/memory-bucket-api
     ports:
       - 8080:8080
     env_file: ./.env
@@ -10,7 +10,7 @@ services:
         condition: service_healthy
 
   postgres:
-    image: postgres
+    image: postgres:16.3
     env_file:
       - path: ./.env
     ports:
