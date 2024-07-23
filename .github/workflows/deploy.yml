@@ -39,9 +39,6 @@ jobs:
       - name: Use Remote Context
         run: docker context use remote
 
-      - name: Docker compose down
-        run: docker compose down
-
       - name: Docker compose pull
         run: docker compose pull
 
