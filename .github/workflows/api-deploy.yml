@@ -1,9 +1,9 @@
-name: Deploy To Develop Server
+name: Deploy API Server
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - api/**
 
 jobs:
   Deploy:
