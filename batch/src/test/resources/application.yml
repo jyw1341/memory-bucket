@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: batch
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 1234
+  batch:
+    jdbc:
+      initialize-schema: always
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        use_sql_comments: true
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+
+storage:
+  profile-name: re-memory
+  region: kr-standard
+  bucket-name: memory-bucket-dev
+  end-point: https://kr.object.ncloudstorage.com
+  thumbnailUrl: /thumbnails/1.jpg
+
