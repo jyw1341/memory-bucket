@@ -1,3 +1,6 @@
 rootProject.name = 'memory-bucket'
 include('api')
+include('batch')
+include('memory-bucket-core')
+include('object-storage-service')
 
